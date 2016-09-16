@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>BOOST_REGEX_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.cpp_regex_traits.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.cregex.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.c_regex_traits.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.fileiter.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.icu.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.instances.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.posix_api.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.regex.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.regex_debug.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.regex_raw_buffer.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.regex_traits_defaults.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.static_mutex.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.usinstances.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.w32_regex_traits.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.wc_regex_traits.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.wide_posix_api.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_regex.winstances.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>False</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PreprocessorDefinitions>;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\lib\native\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemGroup>
+</Project>

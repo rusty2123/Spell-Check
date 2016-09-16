@@ -1,0 +1,61 @@
+﻿  connection.cpp
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+  connection_manager.cpp
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+  main.cpp
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+  mime_types.cpp
+  reply.cpp
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+  request_dispatcher.cpp
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+  request_parser.cpp
+  server.cpp
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+  spell.cpp
+  boost_system.error_code.cpp
+  boost_regex.cpp_regex_traits.cpp
+  boost_regex.cregex.cpp
+  boost_regex.c_regex_traits.cpp
+  boost_regex.fileiter.cpp
+  boost_regex.icu.cpp
+  boost_regex.instances.cpp
+  boost_regex.posix_api.cpp
+  boost_regex.regex.cpp
+  boost_regex.regex_debug.cpp
+  boost_regex.regex_raw_buffer.cpp
+  boost_regex.regex_traits_defaults.cpp
+  boost_regex.static_mutex.cpp
+  boost_regex.usinstances.cpp
+  boost_regex.w32_regex_traits.cpp
+  boost_regex.wc_regex_traits.cpp
+  boost_regex.wide_posix_api.cpp
+  boost_regex.winstances.cpp
+  boost_date_time.gregorian.date_generators.cpp
+  boost_date_time.gregorian.gregorian_types.cpp
+  boost_date_time.gregorian.greg_month.cpp
+  boost_date_time.gregorian.greg_weekday.cpp
+  boost_date_time.posix_time.posix_time_types.cpp
+  Generating code
+  All 2845 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  SpellCheck.vcxproj -> c:\users\rusty\documents\visual studio 2015\Projects\SpellCheck\Release\SpellCheck.exe
+  SpellCheck.vcxproj -> c:\users\rusty\documents\visual studio 2015\Projects\SpellCheck\Release\SpellCheck.pdb (Full PDB)
