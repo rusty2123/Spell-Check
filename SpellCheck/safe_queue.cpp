@@ -2,6 +2,7 @@
 #include <mutex>
 #include <queue>
 #include <thread>
+#include <condition_variable>
 using namespace std;
 
 
@@ -27,18 +28,18 @@ public:
 	}
 
 	auto dequeue() {
-		the_mutex.lock();
-		cv.wait(lk, []() { return !work_queue.empty(); });
+		unique_lock<mutex> lk(the_mutex);
+		cv.wait(lk, [this]() { return !work_queue.empty(); });
 		T front = move(work_queue.front());
 		work_queue.pop();
-		the_mutex.unlock();
+		lk.unlock();
 		return front;
 	}
 
 	void enqueue(T t) {
-		
+
 		the_mutex.lock();
-		the_queue.push(move(t)); 
+		work_queue.push(move(t));
 		the_mutex.unlock();
 		cv.notify_one();
 
