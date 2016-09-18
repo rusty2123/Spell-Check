@@ -5,8 +5,6 @@
 #include <condition_variable>
 using namespace std;
 
-
-
 template <typename T>
 class safe_queue {
 	queue<T> work_queue;
@@ -37,11 +35,9 @@ public:
 	}
 
 	void enqueue(T t) {
-
 		the_mutex.lock();
 		work_queue.push(move(t));
 		the_mutex.unlock();
 		cv.notify_one();
-
 	}
 };
