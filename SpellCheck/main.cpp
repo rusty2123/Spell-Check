@@ -20,11 +20,12 @@
 #include "safe_queue.cpp"
 #include <thread>
 
-safe_queue<pair<http::server::request, http::server::reply>> work_queue;
+safe_queue<function<void()>> work_queue;
+vector<thread> threads;
 
 // Handle request by doing spell check on query string
 // Render results as JSON
-void spellcheck_request(const http::server::request& req, http::server::reply& rep) {
+void spellcheck_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
 	// Set up reply
 	rep.status = http::server::reply::status_type::ok;
 	rep.headers["Content-Type"] = "application/json";
@@ -32,7 +33,7 @@ void spellcheck_request(const http::server::request& req, http::server::reply& r
 	// Loop over spellcheck results
 	bool first = true;
 	rep.content << "[";
-	for (auto& candidate : spell::spellcheck(req.query)) {
+	for (auto& candidate : spell::spellcheck(std::ref(req.query))) {
 		if (first) {
 			first = false;
 		}
@@ -43,25 +44,27 @@ void spellcheck_request(const http::server::request& req, http::server::reply& r
 			<< "\"distance\" : " << candidate.distance << " }";
 	}
 	rep.content << "\n]";
+	done();
 }
 
 void run_threads()
 {
 	while (true)
 	{
-		pair<http::server::request, http::server::reply> data(move(work_queue.dequeue()));
-		spellcheck_request(data.first, data.second);
+		work_queue.dequeue()();
 	}
 }
 
 void make_threads()
 {
 	int num_threads = thread::hardware_concurrency();
+
 	if (num_threads <= 0)
 		num_threads = 2;
+
 	for (int i = 0; i < num_threads - 1; i++)
 	{
-		thread(run_threads).detach();
+		threads.push_back(thread(run_threads));
 	}
 }
 
@@ -70,13 +73,16 @@ void make_threads()
 void handle_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
 	std::cout << req.method << ' ' << req.uri << std::endl;
 	if (req.path == "/spell") {
+
+		work_queue.enqueue([&req, &rep, &done] () mutable { spellcheck_request(std::ref(req), std::ref(rep), std::ref(done)); });
+
 		//spellcheck_request(req, rep);
-		work_queue.enqueue(pair<http::server::request, http::server::reply>(req, rep));
 	}
 	else {
 		rep = http::server::reply::stock_reply(http::server::reply::not_found);
+		done();
 	}
-	done();
+	
 }
 
 // Initialize and run server
@@ -84,6 +90,7 @@ int main()
 {
 	try
 	{
+		make_threads();
 		std::cout << "Listening on port 8000..." << std::endl;
 		http::server::server s("localhost", "8000", handle_request);
 		s.run();
@@ -91,6 +98,12 @@ int main()
 	catch (std::exception& e)
 	{
 		std::cerr << "exception: " << e.what() << "\n";
+	}
+
+	for (auto& t : threads)
+	{
+		if (t.joinable())
+			t.join();
 	}
 
 	return 0;
