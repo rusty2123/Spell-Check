@@ -20,27 +20,13 @@
 #include "safe_queue.cpp"
 #include <thread>
 
-//struct Job
-//{
-//	const http::server::request& request;
-//	http::server::reply& reply;
-//	http::server::done_callback done;
-//
-//	Job(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) : request(req), reply(rep), done(done)
-//	{
-//
-//	}
-//};
-
 safe_queue<function<void()>> work_queue;
-//safe_queue<Job> work_queue;
 vector<thread> threads;
 
 // Handle request by doing spell check on query string
 // Render results as JSON
 void spellcheck_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
 	// Set up reply
-	cout << "NEW REQUEST\n";
 	rep.status = http::server::reply::status_type::ok;
 	rep.headers["Content-Type"] = "application/json";
 
@@ -64,12 +50,7 @@ void spellcheck_request(const http::server::request& req, http::server::reply& r
 void run_threads()
 {
 	while (true)
-	{
-		/*auto f = work_queue.dequeue();
-		spellcheck_request(std::ref(f.request), std::ref(f.reply));
-		f.done();*/
 		work_queue.dequeue()();
-	}
 }
 
 void make_threads()
@@ -80,10 +61,7 @@ void make_threads()
 		num_threads = 2;
 
 	for (int i = 0; i < num_threads - 1; i++)
-	{
 		threads.push_back(thread(run_threads));
-		//thread(run_threads).detach();
-	}
 }
 
 // Called by server whenever a request is received
@@ -91,11 +69,7 @@ void make_threads()
 void handle_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
 	std::cout << req.method << ' ' << req.uri << std::endl;
 	if (req.path == "/spell") {
-
-		//work_queue.enqueue(Job(std::ref(req), std::ref(rep), done));
-
 		work_queue.enqueue( [&req, &rep, done] () { spellcheck_request(std::ref(req), std::ref(rep), done); });
-		//spellcheck_request(req, rep);
 	}
 	else {
 		rep = http::server::reply::stock_reply(http::server::reply::not_found);
