@@ -57,7 +57,7 @@ namespace spell {
 		}
 	};
 
-	DistanceTable table;
+	thread_local DistanceTable table;
 
 	unsigned string_distance(const std::string& a, const std::string& b) {
 		table.resize(a.size() + 1, b.size() + 1);
