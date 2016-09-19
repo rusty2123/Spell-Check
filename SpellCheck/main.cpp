@@ -18,32 +18,43 @@
 #include "reply.hpp"
 #include "spell.hpp"
 #include "safe_queue.cpp"
+#include "safe_map.cpp"
 #include <thread>
 
 safe_queue<function<void()>> work_queue;
+safe_map<string, string> cache;
 vector<thread> threads;
 
 // Handle request by doing spell check on query string
 // Render results as JSON
 void spellcheck_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
+
 	// Set up reply
 	rep.status = http::server::reply::status_type::ok;
 	rep.headers["Content-Type"] = "application/json";
 
-	// Loop over spellcheck results
-	bool first = true;
-	rep.content << "[";
-	for (auto& candidate : spell::spellcheck(std::ref(req.query))) {
-		if (first) {
-			first = false;
-		}
-		else {
-			rep.content << ", ";
-		}
-		rep.content << "\n  { \"word\" : \"" << candidate.word << "\",  "
-			<< "\"distance\" : " << candidate.distance << " }";
+	if (cache.find(req.query))
+	{
+		rep.content << cache.get_value(req.query);
 	}
-	rep.content << "\n]";
+	else
+	{
+		// Loop over spellcheck results
+		bool first = true;
+		rep.content << "[";
+		for (auto& candidate : spell::spellcheck(std::ref(req.query))) {
+			if (first) {
+				first = false;
+			}
+			else {
+				rep.content << ", ";
+			}
+			rep.content << "\n  { \"word\" : \"" << candidate.word << "\",  "
+				<< "\"distance\" : " << candidate.distance << " }";
+		}
+		rep.content << "\n]";
+		cache.add_item(req.query, rep.content.str());
+	}
 	done();
 }
 
