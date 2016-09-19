@@ -17,12 +17,12 @@ public:
 
 	safe_queue(const safe_queue& sq) {
 		lock_guard<mutex> lk(sq.the_mutex);
-		the_queue = sq.the_queue;
+		work_queue = sq.the_queue;
 	}
 
 	safe_queue(safe_queue&& sq) {
 		lock_guard<mutex> lk(the_mutex);
-		the_queue = move(sq.the_queue);
+		work_queue = move(sq.the_queue);
 	}
 
 	auto dequeue() {
