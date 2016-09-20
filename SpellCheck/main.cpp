@@ -58,6 +58,7 @@ void spellcheck_request(const http::server::request& req, http::server::reply& r
 				<< "\"distance\" : " << candidate.distance << " }";
 		}
 		rep.content << "\n]";
+
 		cache.add_item(req.query, rep.content.str());
 	}
 	done();
@@ -69,22 +70,22 @@ void run_threads()
 		work_queue.dequeue()();
 }
 
-void clean_cache()
-{
-	while (true)
-	{
-		this_thread::sleep_for(60s);
-		for (auto it = most_recent.begin(); it != most_recent.end(); ++it)
-		{
-			if (difftime(time(0), most_recent[it->first]) > 60)
-			{
-				cache.remove_item(it->first);
-				most_recent.remove_item(it->first);
-				break;
-			}
-		}
-	}
-}
+//void clean_cache()
+//{
+//	while (true)
+//	{
+//		this_thread::sleep_for(1s);
+//		for (auto it = most_recent.begin(); it != most_recent.end(); ++it)
+//		{
+//
+//			if (difftime(time(0), most_recent[it->first]) > 30)
+//			{
+//				cache.remove_item(it->first);
+//				it = most_recent.remove_item(it->first);
+//			}
+//		}
+//	}
+//}
 
 void make_threads()
 {
@@ -93,10 +94,10 @@ void make_threads()
 	if (num_threads <= 0)
 		num_threads = 2;
 
-	for (int i = 0; i < num_threads - 2; i++)
+	for (int i = 0; i < num_threads - 1; i++)
 		threads.push_back(thread(run_threads));
 
-	threads.push_back(thread(clean_cache));
+	//threads.push_back(thread(clean_cache));
 
 }
 
