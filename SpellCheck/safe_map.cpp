@@ -57,4 +57,19 @@ public:
 		}
 	}
 
+	auto operator[] (const KeyType& key)
+	{
+		shared_lock<shared_timed_mutex> lk(shared_mutex);
+		return the_map[key];
+	}
+
+	auto begin()
+	{
+		return the_map.begin();
+	}
+
+	auto end()
+	{
+		return the_map.end();
+	}
 };

@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include <ctime>
 #include <boost/asio.hpp>
 #include "server.hpp"
 #include "request.hpp"
@@ -23,11 +24,13 @@
 
 safe_queue<function<void()>> work_queue;
 safe_map<string, string> cache;
+safe_map<string, time_t> most_recent;
 vector<thread> threads;
 
 // Handle request by doing spell check on query string
 // Render results as JSON
-void spellcheck_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
+void spellcheck_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
+{
 
 	// Set up reply
 	rep.status = http::server::reply::status_type::ok;
@@ -36,9 +39,11 @@ void spellcheck_request(const http::server::request& req, http::server::reply& r
 	if (cache.find(req.query))
 	{
 		rep.content << cache.get_value(req.query);
+		most_recent.add_item(req.query, time(0));
 	}
 	else
 	{
+		most_recent.add_item(req.query, time(0));
 		// Loop over spellcheck results
 		bool first = true;
 		rep.content << "[";
@@ -75,12 +80,31 @@ void make_threads()
 		threads.push_back(thread(run_threads));
 }
 
+void cachedump_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
+{
+	rep.status = http::server::reply::status_type::ok;
+	rep.headers["Content-Type"] = "application/json";
+
+	rep.content << "[\n";
+	for (auto it = most_recent.begin(); it != most_recent.end(); it++)
+	{
+		rep.content << "    { \"word\" : " << "\"" << it->first << "\"" << ", "
+					<< "\"" << "seconds_elapsed" << "\" : " << difftime(time(0), it->second) << " },\n";
+	}
+	rep.content << "]";
+	done();
+}
+
 // Called by server whenever a request is received
 // Must fill in reply, then call done()
-void handle_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
+void handle_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
+{
 	std::cout << req.method << ' ' << req.uri << std::endl;
 	if (req.path == "/spell") {
 		work_queue.enqueue( [&req, &rep, done] () { spellcheck_request(std::ref(req), std::ref(rep), done); });
+	}
+	else if (req.path == "/cachedump") {
+		cachedump_request(req, rep, done);
 	}
 	else {
 		rep = http::server::reply::stock_reply(http::server::reply::not_found);
