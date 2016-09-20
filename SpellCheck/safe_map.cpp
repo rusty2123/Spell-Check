@@ -72,4 +72,14 @@ public:
 	{
 		return the_map.end();
 	}
+
+	void lock_shared()
+	{
+		shared_mutex.lock_shared();
+	}
+
+	void unlock_shared()
+	{
+		shared_mutex.unlock_shared();
+	}
 };

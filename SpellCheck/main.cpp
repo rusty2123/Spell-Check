@@ -69,6 +69,23 @@ void run_threads()
 		work_queue.dequeue()();
 }
 
+void clean_cache()
+{
+	while (true)
+	{
+		this_thread::sleep_for(60s);
+		for (auto it = most_recent.begin(); it != most_recent.end(); ++it)
+		{
+			if (difftime(time(0), most_recent[it->first]) > 60)
+			{
+				cache.remove_item(it->first);
+				most_recent.remove_item(it->first);
+				break;
+			}
+		}
+	}
+}
+
 void make_threads()
 {
 	int num_threads = thread::hardware_concurrency();
@@ -76,8 +93,11 @@ void make_threads()
 	if (num_threads <= 0)
 		num_threads = 2;
 
-	for (int i = 0; i < num_threads - 1; i++)
+	for (int i = 0; i < num_threads - 2; i++)
 		threads.push_back(thread(run_threads));
+
+	threads.push_back(thread(clean_cache));
+
 }
 
 void cachedump_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
@@ -88,8 +108,10 @@ void cachedump_request(const http::server::request& req, http::server::reply& re
 	rep.content << "[\n";
 	for (auto it = most_recent.begin(); it != most_recent.end(); it++)
 	{
+		most_recent.lock_shared();
 		rep.content << "    { \"word\" : " << "\"" << it->first << "\"" << ", "
 					<< "\"" << "seconds_elapsed" << "\" : " << difftime(time(0), it->second) << " },\n";
+		most_recent.unlock_shared();
 	}
 	rep.content << "]";
 	done();
