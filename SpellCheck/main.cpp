@@ -70,22 +70,24 @@ void run_threads()
 		work_queue.dequeue()();
 }
 
-//void clean_cache()
-//{
-//	while (true)
-//	{
-//		this_thread::sleep_for(1s);
-//		for (auto it = most_recent.begin(); it != most_recent.end(); ++it)
-//		{
-//
-//			if (difftime(time(0), most_recent[it->first]) > 30)
-//			{
-//				cache.remove_item(it->first);
-//				it = most_recent.remove_item(it->first);
-//			}
-//		}
-//	}
-//}
+void clean_cache()
+{
+	while (true)
+	{
+		this_thread::sleep_for(60s);
+		for (auto it = most_recent.begin(); it != most_recent.end(); ++it)
+		{
+
+			if (difftime(time(0), most_recent[it->first]) > 60)
+			{
+				cache.remove_item(it->first);
+				it = most_recent.remove_item(it->first);
+			}
+			if (it == most_recent.end())
+				break;
+		}
+	}
+}
 
 void make_threads()
 {
@@ -94,10 +96,10 @@ void make_threads()
 	if (num_threads <= 0)
 		num_threads = 2;
 
-	for (int i = 0; i < num_threads - 1; i++)
+	for (int i = 0; i < num_threads - 2; i++)
 		threads.push_back(thread(run_threads));
 
-	//threads.push_back(thread(clean_cache));
+	threads.push_back(thread(clean_cache));
 
 }
 
