@@ -48,13 +48,40 @@ public:
 		the_map[key] = value;
 	}
 
-	void remove_item(KeyType key)
+	auto remove_item(KeyType key)
 	{
 		if (find(key))
 		{
 			lock_guard<shared_timed_mutex> lk(shared_mutex);
-			the_map.erase(the_map.find(key));
+			return the_map.erase(the_map.find(key));
 		}
 	}
 
+	auto operator[] (const KeyType& key)
+	{
+		shared_lock<shared_timed_mutex> lk(shared_mutex);
+		return the_map[key];
+	}
+
+	auto begin()
+	{
+		shared_lock<shared_timed_mutex> lk(shared_mutex);
+		return the_map.begin();
+	}
+
+	auto end()
+	{
+		shared_lock<shared_timed_mutex> lk(shared_mutex);
+		return the_map.end();
+	}
+
+	void lock_shared()
+	{
+		shared_mutex.lock_shared();
+	}
+
+	void unlock_shared()
+	{
+		shared_mutex.unlock_shared();
+	}
 };

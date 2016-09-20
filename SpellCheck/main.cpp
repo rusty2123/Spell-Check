@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include <ctime>
 #include <boost/asio.hpp>
 #include "server.hpp"
 #include "request.hpp"
@@ -23,11 +24,13 @@
 
 safe_queue<function<void()>> work_queue;
 safe_map<string, string> cache;
+safe_map<string, time_t> most_recent;
 vector<thread> threads;
 
 // Handle request by doing spell check on query string
 // Render results as JSON
-void spellcheck_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
+void spellcheck_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
+{
 
 	// Set up reply
 	rep.status = http::server::reply::status_type::ok;
@@ -36,9 +39,11 @@ void spellcheck_request(const http::server::request& req, http::server::reply& r
 	if (cache.find(req.query))
 	{
 		rep.content << cache.get_value(req.query);
+		most_recent.add_item(req.query, time(0));
 	}
 	else
 	{
+		most_recent.add_item(req.query, time(0));
 		// Loop over spellcheck results
 		bool first = true;
 		rep.content << "[";
@@ -53,6 +58,7 @@ void spellcheck_request(const http::server::request& req, http::server::reply& r
 				<< "\"distance\" : " << candidate.distance << " }";
 		}
 		rep.content << "\n]";
+
 		cache.add_item(req.query, rep.content.str());
 	}
 	done();
@@ -64,6 +70,23 @@ void run_threads()
 		work_queue.dequeue()();
 }
 
+//void clean_cache()
+//{
+//	while (true)
+//	{
+//		this_thread::sleep_for(1s);
+//		for (auto it = most_recent.begin(); it != most_recent.end(); ++it)
+//		{
+//
+//			if (difftime(time(0), most_recent[it->first]) > 30)
+//			{
+//				cache.remove_item(it->first);
+//				it = most_recent.remove_item(it->first);
+//			}
+//		}
+//	}
+//}
+
 void make_threads()
 {
 	int num_threads = thread::hardware_concurrency();
@@ -73,14 +96,38 @@ void make_threads()
 
 	for (int i = 0; i < num_threads - 1; i++)
 		threads.push_back(thread(run_threads));
+
+	//threads.push_back(thread(clean_cache));
+
+}
+
+void cachedump_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
+{
+	rep.status = http::server::reply::status_type::ok;
+	rep.headers["Content-Type"] = "application/json";
+
+	rep.content << "[\n";
+	for (auto it = most_recent.begin(); it != most_recent.end(); it++)
+	{
+		most_recent.lock_shared();
+		rep.content << "    { \"word\" : " << "\"" << it->first << "\"" << ", "
+					<< "\"" << "seconds_elapsed" << "\" : " << difftime(time(0), it->second) << " },\n";
+		most_recent.unlock_shared();
+	}
+	rep.content << "]";
+	done();
 }
 
 // Called by server whenever a request is received
 // Must fill in reply, then call done()
-void handle_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done) {
+void handle_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
+{
 	std::cout << req.method << ' ' << req.uri << std::endl;
 	if (req.path == "/spell") {
 		work_queue.enqueue( [&req, &rep, done] () { spellcheck_request(std::ref(req), std::ref(rep), done); });
+	}
+	else if (req.path == "/cachedump") {
+		cachedump_request(req, rep, done);
 	}
 	else {
 		rep = http::server::reply::stock_reply(http::server::reply::not_found);
