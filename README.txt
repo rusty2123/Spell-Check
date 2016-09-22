@@ -18,7 +18,7 @@ file:line:col to refer to places in your code.
 	
 	enqueue(T t) in safe_queue.cpp:37-42 is thread safe because it obtains an exclusive lock when called. After pushing data into
 	the queue, it will unlock the mutex and call notify_one(). Calling notify_one() AFTER the mutex is unlocked is important
-	because it is possible for another thread to be notified and try to obtain the queue before the queue is unlocked.
+	because it is possible for another thread to be notified and try to obtain the lock before the mutex is unlocked.
 	
 
 2.  How many threads did you create to handle requests?  Why did you select
