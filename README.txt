@@ -11,12 +11,12 @@ file:line:col to refer to places in your code.
 	The safe_queue's copy and move constructors in safe_queue.cpp: are thread safe because
 	they hold an exclusive lock while the entire operation takes place.
 
-	dequeue() in safe_queue.cpp: is thread safe because it obtains an exclusive lock while 
-	it waiting on the condition variable for something to be enqueued and when it removes the front of the queue. Multiple
+	dequeue() in safe_queue.cpp:28-35 is thread safe because it obtains an exclusive lock while 
+	it waits on the condition variable for something to be enqueued. It then removes the front of the queue. Multiple
 	threads also cannot cause problems by doing this at the same time because enqueue() will only call notify_one(). This
 	only allows one thread to dequeue at a time.
 	
-	enqueue(T t) in safe_queue.cpp: is thread safe because it obtains an exclusive lock when called. After pushing data into
+	enqueue(T t) in safe_queue.cpp:37-42 is thread safe because it obtains an exclusive lock when called. After pushing data into
 	the queue, it will unlock the mutex and call notify_one(). Calling notify_one() AFTER the mutex is unlocked is important
 	because it is possible for another thread to be notified and try to obtain the queue before the queue is unlocked.
 	
@@ -26,7 +26,7 @@ file:line:col to refer to places in your code.
     threads.
 	
 	We created as many threads as the user's computer would allow. If that number is 
-	unspecified then we only create two. We did this on main.cpp:69-72. We selected
+	unspecified then we only create two. We did this on main.cpp:94-97. We selected
 	these numbers to ensure the highest multi-processing capabilities possible, and
 	to always make sure the program is multi-threaded.
 
@@ -60,7 +60,7 @@ file:line:col to refer to places in your code.
 	They use shared locks because they only read from the map, and this ensuures that no other
 	threads modify the data while it is read. 
 
-	add_item(KeyType key, ValueType value) and remove_item(KeyType key) in safe_map.cpp: are 
+	add_item(KeyType key, ValueType value) and remove_item(KeyType key) in safe_map.cpp:45-58 are 
 	thread safe because they hold exclusive locks when they modify data in the map. This ensures
 	that no other threads read the un-updated data or modify it at the same time.	
 
@@ -68,7 +68,7 @@ file:line:col to refer to places in your code.
     syncrhonization do you expect for these operations: how likely are they to
     block?
 	
-	We read and update the code in main.cpp:36-39. We expect high amounts of blocking when
+	We read the cache in main.cpp:39. We update the cache in main.cpp:62 We expect high amounts of blocking when
 	using the map because whenever the threads do not find their word, they will write.
 	However, as the cache increases in size the threads will block eachother less because 
 	they will more likely find their word and only have to read the data. This is due to the
