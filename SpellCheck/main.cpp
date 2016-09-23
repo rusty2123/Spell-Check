@@ -100,7 +100,6 @@ void make_threads()
 		threads.push_back(thread(run_threads));
 
 	threads.push_back(thread(clean_cache));
-
 }
 
 void cachedump_request(const http::server::request& req, http::server::reply& rep, http::server::done_callback done)
