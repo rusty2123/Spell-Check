@@ -15,17 +15,20 @@ public:
 
 	safe_queue() = default;
 
-	safe_queue(const safe_queue& sq) {
+	safe_queue(const safe_queue& sq)
+	{
 		lock_guard<mutex> lk(sq.the_mutex);
 		work_queue = sq.the_queue;
 	}
 
-	safe_queue(safe_queue&& sq) {
+	safe_queue(safe_queue&& sq)
+	{
 		lock_guard<mutex> lk(the_mutex);
 		work_queue = move(sq.the_queue);
 	}
 
-	auto dequeue() {
+	auto dequeue()
+	{
 		unique_lock<mutex> lk(the_mutex);
 		cv.wait(lk, [this]() { return !work_queue.empty(); });
 		T front = move(work_queue.front());
@@ -34,7 +37,8 @@ public:
 		return front;
 	}
 
-	void enqueue(T t) {
+	void enqueue(T t)
+	{
 		the_mutex.lock();
 		work_queue.push(move(t));
 		the_mutex.unlock();

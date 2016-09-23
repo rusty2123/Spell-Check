@@ -14,12 +14,14 @@ public:
 
 	safe_map() = default;
 
-	safe_map(const safe_map& sm) {
+	safe_map(const safe_map& sm)
+	{
 		lock_guard<shared_timed_mutex> lk(sm.shared_mutex);
 		the_map = sm.the_map;
 	}
 
-	safe_map(safe_map&& sm) {
+	safe_map(safe_map&& sm)
+	{
 		lock_guard<shared_timed_mutex> lk(shared_mutex);
 		the_map = move(sm.the_map);
 	}
